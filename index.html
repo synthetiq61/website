@@ -11,6 +11,8 @@
       --text-color: #0b0b0b;
       --accent-color: #0077ff;
       --gradient: linear-gradient(135deg, #ffffff, #e3f2fd);
+      --card-bg: rgba(255,255,255,0.08);
+      --border-color: rgba(0,119,255,0.2);
     }
 
     body.dark {
@@ -18,6 +20,14 @@
       --text-color: #e0f7fa;
       --accent-color: #00ffff;
       --gradient: linear-gradient(135deg, #000814, #001f3f);
+      --card-bg: rgba(0, 31, 63, 0.6);
+      --border-color: rgba(0,255,255,0.2);
+    }
+
+    * {
+      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                  color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
@@ -25,7 +35,6 @@
       font-family: 'Poppins', sans-serif;
       background: var(--gradient);
       color: var(--text-color);
-      transition: background 0.6s ease, color 0.6s ease;
       overflow-x: hidden;
     }
 
@@ -39,7 +48,8 @@
       position: fixed;
       width: 100%;
       z-index: 10;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .logo {
@@ -49,6 +59,7 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 10px;
+      animation: slideDown 0.6s ease forwards;
     }
 
     nav {
@@ -63,26 +74,45 @@
       text-decoration: none;
       color: var(--text-color);
       font-weight: 500;
-      transition: color 0.3s;
       padding: 8px 16px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      animation: slideDown 0.6s ease forwards;
     }
 
-    nav a:hover {
-      color: var(--accent-color);
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-color);
+      transition: left 0.3s ease;
+    }
+
+    nav a:hover::after {
+      left: 0;
     }
 
     .mode-toggle {
-      border: none;
-      background: var(--accent-color);
-      color: #fff;
+      border: 2px solid var(--accent-color);
+      background: transparent;
+      color: var(--accent-color);
       padding: 8px 16px;
       border-radius: 20px;
       cursor: pointer;
-      transition: all 0.3s;
+      font-weight: 500;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: slideDown 0.6s ease forwards;
     }
 
     .mode-toggle:hover {
-      opacity: 0.8;
+      background: var(--accent-color);
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 119, 255, 0.3);
     }
 
     #progressBar {
@@ -90,10 +120,10 @@
       top: 0;
       left: 0;
       width: 0%;
-      height: 5px;
-      background: var(--accent-color);
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-color), #00ffff);
       z-index: 999;
-      transition: width 0.1s ease;
+      box-shadow: 0 0 10px var(--accent-color);
     }
 
     section {
@@ -104,12 +134,32 @@
       justify-content: center;
       padding: 140px 10% 100px;
       text-align: center;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    section:nth-child(3) {
+      animation-delay: 0.1s;
+    }
+    section:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+    section:nth-child(5) {
+      animation-delay: 0.3s;
+    }
+    section:nth-child(6) {
+      animation-delay: 0.4s;
     }
 
     h1, h2 {
       margin-bottom: 20px;
       color: var(--accent-color);
       letter-spacing: 1px;
+      font-size: 3rem;
+      background: linear-gradient(135deg, var(--accent-color), #00ffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     p {
@@ -117,6 +167,8 @@
       line-height: 1.8;
       opacity: 0.85;
       font-size: 1.1rem;
+      animation: fadeInUp 1s ease 0.2s forwards;
+      opacity: 0;
     }
 
     .project-grid {
@@ -127,19 +179,42 @@
     }
 
     .card {
-      background: rgba(255,255,255,0.05);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 16px;
       padding: 30px;
-      transition: transform 0.4s, background 0.4s;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      animation: slideUp 0.6s ease forwards;
+      opacity: 0;
     }
 
-    body.dark .card {
-      background: rgba(0, 31, 63, 0.6);
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.5s; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
     }
 
     .card:hover {
       transform: translateY(-10px);
-      background: rgba(0,255,255,0.1);
+      border-color: var(--accent-color);
+      box-shadow: 0 20px 40px rgba(0, 119, 255, 0.2);
     }
 
     .team-members {
@@ -152,27 +227,65 @@
 
     .member {
       text-align: center;
-      transition: transform 0.3s ease;
+      animation: popIn 0.6s ease forwards;
+      opacity: 0;
     }
 
+    .member:nth-child(1) { animation-delay: 0.3s; }
+    .member:nth-child(2) { animation-delay: 0.4s; }
+    .member:nth-child(3) { animation-delay: 0.5s; }
+    .member:nth-child(4) { animation-delay: 0.6s; }
+    .member:nth-child(5) { animation-delay: 0.7s; }
+
     .member:hover {
-      transform: scale(1.05);
+      transform: scale(1.1) rotateY(5deg);
+    }
+
+    .avatar {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
     }
 
     .join-btn {
       margin-top: 40px;
-      background: var(--accent-color);
+      background: linear-gradient(135deg, var(--accent-color), #00ffff);
       color: #fff;
       padding: 14px 28px;
       border-radius: 30px;
       border: none;
       cursor: pointer;
       font-size: 1rem;
-      transition: background 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 1s ease 0.4s forwards;
+      opacity: 0;
+      box-shadow: 0 10px 30px rgba(0, 119, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .join-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .join-btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .join-btn:hover {
-      background: #005fcc;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 119, 255, 0.4);
     }
 
     footer {
@@ -180,6 +293,9 @@
       padding: 40px 10%;
       opacity: 0.8;
       font-size: 0.9rem;
+      border-top: 1px solid var(--border-color);
+      animation: fadeInUp 1s ease 0.5s forwards;
+      opacity: 0;
     }
 
     @keyframes fadeInUp {
@@ -193,8 +309,46 @@
       }
     }
 
-    section {
-      animation: fadeInUp 1s ease forwards;
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
     }
   </style>
 </head>
@@ -239,7 +393,8 @@
       <div class="member">
         <div class="avatar">👤</div>
         <p>Member 3</p>
-      </div><div class="member">
+      </div>
+      <div class="member">
         <div class="avatar">👤</div>
         <p>Member 4</p>
       </div>
@@ -252,7 +407,7 @@
 
   <section id="join">
     <h2>Join SynthetIQ</h2>
-    <p>Be part of a growing community where innovation meets intelligence. Let’s build and learn about the future of AI together.</p>
+    <p>Be part of a growing community where innovation meets intelligence. Let's build and learn about the future of AI together.</p>
     <button class="join-btn">Join Now</button>
   </section>
 
